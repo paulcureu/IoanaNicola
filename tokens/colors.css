@@ -1,0 +1,28 @@
+:root{
+/* base — sampled from the portfolio pages (beige model photos, timber interiors, sepia renders) */
+--paper-0:#fbfaf7;--paper-1:#f5f2ec;--paper-2:#efeae0;
+--sand-100:#ebe5d8;--sand-200:#ddd4c0;--sand-300:#cbc2a2;
+--taupe-400:#a99a88;--clay-500:#806c60;--brown-600:#6b5d52;--brown-700:#5e4e42;--brown-800:#463a31;--brown-900:#2f2823;
+--white:#ffffff;
+/* semantic */
+--surface-page:var(--paper-0);
+--surface-raised:var(--paper-1);
+--surface-sunken:var(--paper-2);
+--surface-hover:var(--sand-100);
+--surface-press:var(--sand-200);
+--surface-inverse:var(--brown-900);
+--surface-scrim:rgba(47,40,35,.28);
+--fg-1:var(--brown-900);
+--fg-2:var(--brown-600);
+--fg-3:var(--taupe-400);
+--fg-inverse:var(--paper-0);
+--accent:var(--sand-300);
+--accent-strong:var(--clay-500);
+--line:#e6dfd1;
+--line-strong:#cfc4b0;
+--focus-ring:var(--clay-500);
+--text-body:var(--fg-1);
+--text-muted:var(--fg-2);
+--text-faint:var(--fg-3);
+--book-gutter-shade:rgba(70,58,49,.16);
+}

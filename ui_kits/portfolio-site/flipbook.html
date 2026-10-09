@@ -1,0 +1,57 @@
+<!-- @dsCard group="Portfolio site" viewport="1440x860" name="Flipbook — standalone" subtitle="v1: start screen → flip-book reader (kept as-is)" -->
+<!doctype html>
+<html lang="ro"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bude Ioana Nicola — Portofoliu</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script src="data.js"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="StartScreen.jsx"></script>
+<script type="text/babel" src="Reader.jsx"></script>
+</head><body><div id="root"></div>
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"layout":"spread","startScreen":true}/*EDITMODE-END*/;
+const BASE = '../../';
+
+function readHash() { const m = location.hash.match(/p=(\d+)/); return m ? Math.max(1, Math.min(15, +m[1])) : null; }
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const h = readHash();
+  const [screen, setScreen] = React.useState(h || !t.startScreen ? 'reader' : 'start');
+  const [page, setPage] = React.useState(h || 1);
+  const [lang, setLangState] = React.useState(() => localStorage.getItem('bin-lang') || 'ro');
+  const [mobile, setMobile] = React.useState(window.innerWidth < 760);
+  const [isFs, setFs] = React.useState(false);
+  const setLang = l => { setLangState(l); localStorage.setItem('bin-lang', l); document.documentElement.lang = l; };
+
+  React.useEffect(() => { const r = () => setMobile(window.innerWidth < 760); window.addEventListener('resize', r); return () => window.removeEventListener('resize', r); }, []);
+  React.useEffect(() => { const f = () => setFs(!!document.fullscreenElement); document.addEventListener('fullscreenchange', f); return () => document.removeEventListener('fullscreenchange', f); }, []);
+  React.useEffect(() => { if (screen === 'reader') history.replaceState(null, '', '#p=' + page); else history.replaceState(null, '', location.pathname + location.search); }, [page, screen]);
+  React.useEffect(() => { if (!t.startScreen && screen === 'start') setScreen('reader'); }, [t.startScreen]);
+
+  const toggleFs = () => { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(() => {}); };
+  const open = p => { setPage(p); setScreen('reader'); window.scrollTo(0, 0); };
+  const home = () => { if (document.fullscreenElement) document.exitFullscreen(); setScreen('start'); };
+  const props = { lang, setLang, page, setPage, onHome: home, base: BASE };
+
+  return (
+    <>
+      {screen === 'start'
+        ? <StartScreen lang={lang} setLang={setLang} onOpen={open} mobile={mobile} base={BASE} />
+        : mobile
+          ? <MobileReader {...props} />
+          : <Reader {...props} layout={t.layout} isFs={isFs} toggleFs={toggleFs} />}
+      <TweaksPanel>
+        <TweakSection label="Desktop book" />
+        <TweakRadio label="Layout" value={t.layout} options={['spread', 'single']} onChange={v => setTweak('layout', v)} />
+        <TweakToggle label="Start screen" value={t.startScreen} onChange={v => setTweak('startScreen', v)} />
+      </TweaksPanel>
+    </>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script></body></html>

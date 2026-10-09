@@ -1,0 +1,6 @@
+html,body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:var(--font-sans);font-size:var(--size-body);line-height:var(--leading-body);-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+a{color:var(--fg-1);text-decoration:underline;text-decoration-color:var(--line-strong);text-underline-offset:3px}
+a:hover{color:var(--accent-strong);text-decoration-color:currentColor}
+:focus-visible{outline:1px solid var(--focus-ring);outline-offset:3px}
+::selection{background:var(--sand-200)}
