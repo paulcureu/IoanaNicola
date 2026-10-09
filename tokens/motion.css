@@ -1,6 +1,0 @@
-:root{
---ease-page:cubic-bezier(.645,.045,.355,1);/* @kind other */
---ease-out:cubic-bezier(.2,.7,.2,1);/* @kind other */
---dur-fast:160ms;/* @kind other */--dur-base:240ms;/* @kind other */--dur-slow:480ms;/* @kind other */--dur-page:800ms;/* @kind other */
-}
-@media (prefers-reduced-motion:reduce){:root{--dur-page:1ms;/* @kind other */--dur-slow:1ms;/* @kind other */--dur-base:1ms;/* @kind other */}}
